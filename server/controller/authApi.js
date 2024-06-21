@@ -76,8 +76,7 @@ module.exports.fetchInovices= async (req, res) => {
   }
 };
 
-const zapierWebhookUrl =
-  "https://hooks.zapier.com/hooks/catch/19225056/2bh3xx6/";
+const zapierWebhookUrl = process.env.ZAPIER_WEBHOOK_URL;
 
 module.exports.triggerAutomation = async (req, res) => {
   try {
