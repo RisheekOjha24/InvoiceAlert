@@ -89,7 +89,15 @@ module.exports.triggerAutomation = async (req, res) => {
     const webhookPayloads = invoices.map((invoice) => ({
       email: invoice.recipient, // changed to "email" as per Zapier requirements
       subject: `Invoice Details`,
-      body: `Jai shree ram`,
+      body: `
+        <html>
+          <body>
+            <h2>Invoice Details</h2>
+            <p>Amount: ${invoice.amount}</p>
+            <p>Due Date: ${invoice.dueDate}</p>
+          </body>
+        </html>
+      `,
     }));
 
     const promises = webhookPayloads.map(async (payload) => {
