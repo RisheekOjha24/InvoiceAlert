@@ -6,7 +6,6 @@ Invoice Reminder System is a web application that helps businesses manage and au
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Setup](#setup)
 - [Environment Variables](#environment-variables)
 - [Acknowledgements](#acknowledgements)
 
@@ -18,10 +17,9 @@ Invoice Reminder System is a web application that helps businesses manage and au
 
 ## Installation
 
-bash
-git clone (link unavailable)
-
-## Setup
+```bash
+git clone https://github.com/RisheekOjha24/InvoiceAlert.git
+```
 
 Frontend setup
 ```bash
@@ -29,7 +27,7 @@ cd frontend
 npm install
 ```
 
-**Backend setup
+Backend setup
 ```bash
 cd ..
 cd server
@@ -51,8 +49,8 @@ Running the Application
    ```bash
    cd frontend
    npm run dev
-bash```
-  
+
+### Open a new terminal  
 
 2) Backend
 
