@@ -1,43 +1,40 @@
-Here is the content converted to GitHub Flavored Markdown (GFM) format:
-
 # Invoice Reminder System
 
 Invoice Reminder System is a web application that helps businesses manage and automate invoice reminders using Zapier integration. Built with React for the frontend and Node.js/Express for the backend, it provides an intuitive interface for invoice management and automated email notifications.
 
 ## Table of Contents
 
-- **prerequisites**
-- **installation**
-- **environment-variables**
-- **running-the-application**
-- **acknowledgements**
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Acknowledgements](#acknowledgements)
 
-**Prerequisites
+## Prerequisites
 
-- Node.js and npm: You can download them from (link unavailable).
-- MongoDB: Install MongoDB from (link unavailable).
-- MongoDB Compass: Recommended for easy database management.
+- Node.js and npm: You can download them from the official [Node.js website](https://nodejs.org/).
+- MongoDB: Install MongoDB from the official [MongoDB website](https://www.mongodb.com/).
+- MongoDB Compass: Recommended for easy database management, available at [MongoDB Compass](https://www.mongodb.com/products/compass).
 
-**Installation
+## Installation
 
-
-bash```
-git clone (link unavailable)
+```bash
+git clone https://github.com/RisheekOjha24/InvoiceAlert.git
 ```
 
-**Frontend setup
-bash```
+Frontend setup
+```bash
 cd frontend
 npm install
 ```
 
-**Backend setup
-bash```
+Backend setup
+```bash
 cd ..
 cd server
-npm install```
+npm install
+```
 
-**Environment Variables
+## Environment Variables
 
 Create a .env file in the server directory with the following variables:
 
@@ -49,20 +46,20 @@ ZAPIER_WEBHOOK_URL=<your_zapier_webhook_url> <br>
 Running the Application
 
 1) Frontend
-bash```
-cd frontend
-npm run dev
-```
+   ```bash
+   cd frontend
+   npm run dev
+
+### Open a new terminal  
 
 2) Backend
 
-bash```
-cd server
-npm run start
+  ```bash
+  cd server
+  npm run start
 ```
 
-
-**Acknowledgements
+## Acknowledgements
 
 - React
 - Node.js
