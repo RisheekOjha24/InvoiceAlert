@@ -28,7 +28,7 @@ npm install
 ```
 
 Backend setup
-```bash
+```javascript
 cd ..
 cd server
 npm install
