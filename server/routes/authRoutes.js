@@ -8,6 +8,7 @@ router.post("/signin", signin);
 router.post("/createinvoice",createInvoice);
 router.post("/trigger-automation", triggerAutomation);
 router.get("/invoices/:email", fetchInovices);
+// router.delete("/deleteList",deleteInvoice);
 
 
 module.exports = router;

@@ -2,14 +2,15 @@ const User = require("../model/userSchema");
 const axios = require("axios");
 
  module.exports.signin = async (req, res) => {
-    const { email, name } = req.body;
+    
+  const { email, name } = req.body;
 
     try {
-      // Check if the user exists in the database
+     
       let user = await User.findOne({ email });
 
       if (!user) {
-        // Create a new user if not found
+       
         user = new User({ name, email });
         user._id = null;
         await user.save();
@@ -17,8 +18,7 @@ const axios = require("axios");
           .status(201)
           .json({ msg: "User created successfully", status: true, user });
       } else {
-        // User already exists, fetch their invoice list
-        // Assuming 'invoices' is an array field in the User schema
+        
         res.json({ msg: "User found", status: true, user });
       }
     } catch (err) {
@@ -28,30 +28,31 @@ const axios = require("axios");
   };
 
 module.exports.createInvoice = async (req, res) => {
+  
   const { amount, dueDate, recipient, email } = req.body;
 
   try {
-    // Check if the user exists in the database
+   
     let user = await User.findOne({ email });
 
-    if (user) {
-      // Create a new invoice
-      const newInvoice = {
+    if (user)
+    {
+        const newInvoice = {
         recipient,
         amount,
         dueDate,
       };
 
-      // Add the new invoice to the user's invoices array
+    
       user.invoices.push(newInvoice);
 
-      // Save the updated user
       await user.save();
 
       res
         .status(200)
         .json({ message: "Invoice created successfully", invoice: newInvoice });
-    } else {
+    } 
+    else {
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
@@ -82,12 +83,12 @@ module.exports.triggerAutomation = async (req, res) => {
   try {
     const { invoices } = req.body;
 
-    if (!Array.isArray(invoices)) {
-      throw new Error("Invoices data is not an array.");
+      if (!Array.isArray(invoices)) {
+        throw new Error("Invoices data is not an array.");
     }
 
     const webhookPayloads = invoices.map((invoice) => ({
-      email: invoice.recipient, // changed to "email" as per Zapier requirements
+      email: invoice.recipient,
       subject: `Invoice Details`,
       body: `
         <html>

@@ -10,8 +10,7 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     const tellme = await Swal.fire({
-      title: "Are you sure?",
-      text: "Are you sure you want to log out?",
+      title: "Sure you want to log out?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -5,17 +5,16 @@ import { styled } from "@mui/system";
 import { createInvoice } from "../utils/APIRoute";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginTop: theme.spacing(4),
+const StyledPaper = styled(Paper)({
+  padding: "24px",
+  marginTop: "16px", 
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-}));
-
+});
 const StyledForm = styled("form")({
   width: "100%",
   marginTop: "1rem",
@@ -51,7 +50,7 @@ const CreateInvoice = () => {
   };
 
   useEffect(() => {
-    // Fetch email from localStorage on component mount
+
     const userEmail = localStorage.getItem("user");
     if (userEmail) {
       const { email } = JSON.parse(userEmail);
@@ -76,7 +75,7 @@ const CreateInvoice = () => {
       });
       console.log("Invoice created successfully:", response.data);
       navigate("/invoices")
-      // Optionally, redirect or perform other actions after successful creation
+     
     } catch (error) {
       console.error("Error creating invoice:", error);
       toast.error("Error creating invoice. Please try again.");

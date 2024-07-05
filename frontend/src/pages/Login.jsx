@@ -34,7 +34,9 @@ const Login = () => {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
+
       const decoded = jwtDecode(credentialResponse.credential);
+      console.log("JWT Decoded = ",decoded);
       const { name, email } = decoded;
 
       const response = await axios.post(signin, { name, email });
