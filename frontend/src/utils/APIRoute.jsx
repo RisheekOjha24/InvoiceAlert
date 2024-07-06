@@ -3,4 +3,4 @@ export const signin=`${host}/auth/signin`;
 export const createInvoice = `${host}/auth/createinvoice`;
 export const fetchInvoice = `${host}/auth/invoices`;
 export const triggerAutomation = `${host}/auth/trigger-automation`;
-export const deleteList = `${host}/auth/delete`;
+export const deleteList = `${host}/auth/deleteList`;

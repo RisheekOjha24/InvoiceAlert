@@ -36,7 +36,7 @@ const Login = () => {
     try {
 
       const decoded = jwtDecode(credentialResponse.credential);
-      console.log("JWT Decoded = ",decoded);
+  
       const { name, email } = decoded;
 
       const response = await axios.post(signin, { name, email });
@@ -46,10 +46,11 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify({ name, email }));
 
       console.log("Sign in successful:", user);
-      navigate("/invoices"); // Navigate to invoices page or handle based on user details
+
+      navigate("/invoices"); 
     } catch (error) {
       console.error("Sign in error:", error);
-      // Handle sign-in error (e.g., display error message to the user)
+      
     }
   };
 

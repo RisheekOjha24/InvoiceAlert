@@ -75,16 +75,17 @@ function HomePage() {
 
   const handleDeleteInvoice = async (id) => {
     try {
-      // Assuming deletion API endpoint or logic here
-      // For demo purposes, we'll just update the state locally
-      console.log(id);
-      // await axios.delete(deleteList,{
-      //   user
-      // })
-      
-      const updatedInvoices = invoices.filter((invoice) => invoice.id !== id);
+
+      const response= await axios.delete(deleteList, {
+        data: {
+          email:user,
+          invoiceId: id, 
+        },
+      });
+      const updatedInvoices = invoices.filter((invoice) => invoice._id !== id);
+
       setInvoices(updatedInvoices);
-      setFilteredInvoices(updatedInvoices); // Update filteredInvoices after deletion
+      setFilteredInvoices(updatedInvoices); 
       toast.success("Invoice deleted successfully!");
     } catch (error) {
       console.error("Error deleting invoice:", error);

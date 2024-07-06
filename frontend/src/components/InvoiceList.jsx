@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 function InvoiceList({ invoices, onDelete }) {
 
    const handleDelete = async(id) => {
+
     const tellme = await Swal.fire({
       title: "Delete the invoice ?",
       icon: "warning",
@@ -28,6 +29,7 @@ function InvoiceList({ invoices, onDelete }) {
       width: "25rem",
     });  
     if (!tellme.isConfirmed) return;
+    
     onDelete(id);
   };
 
@@ -48,14 +50,14 @@ function InvoiceList({ invoices, onDelete }) {
           </TableHead>
           <TableBody>
             {invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
+              <TableRow key={invoice._id}>
                 <TableCell>{invoice.recipient}</TableCell>
                 <TableCell>Rs {invoice.amount}</TableCell>
                 <TableCell>{invoice.dueDate}</TableCell>
                 <TableCell>
                   <IconButton
                     aria-label="delete"
-                    onClick={() => handleDelete(invoice.id)}
+                    onClick={() => handleDelete(invoice._id)}
                   >
                     <DeleteIcon />
                   </IconButton>

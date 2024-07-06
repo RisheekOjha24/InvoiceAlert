@@ -28,31 +28,34 @@ const axios = require("axios");
   };
 
 module.exports.createInvoice = async (req, res) => {
-  
   const { amount, dueDate, recipient, email } = req.body;
 
   try {
-   
+    // Find the user by email
     let user = await User.findOne({ email });
 
-    if (user)
-    {
-        const newInvoice = {
+    if (user) {
+      // Create a new invoice object
+      const invoiceData = {
         recipient,
         amount,
         dueDate,
       };
 
-    
-      user.invoices.push(newInvoice);
+      user.invoices.push(invoiceData);
 
+      // Save the user object with the new invoice
       await user.save();
 
+      // Return the newly created invoice as part of the response
       res
         .status(200)
-        .json({ message: "Invoice created successfully", invoice: newInvoice });
-    } 
-    else {
+        .json({
+          message: "Invoice created successfully",
+          invoiceId: invoiceData._id,
+        });
+    } else {
+      // If user is not found
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
@@ -117,10 +120,35 @@ module.exports.triggerAutomation = async (req, res) => {
     });
 
     await Promise.all(promises);
+    // Promise.all takes an array of promises and returns a single promise.
 
     res.status(200).json({ message: "Automation triggered successfully" });
   } catch (error) {
     console.error("Error triggering automation:", error);
     res.status(500).json({ error: "Failed to trigger automation" });
+  }
+};
+
+
+module.exports.deleteInvoice = async (req, res) => {
+  const { email, invoiceId } = req.body; 
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.invoices = user.invoices.filter(
+      (invoice) => invoice._id.toString() !== invoiceId
+    );
+
+    await user.save();
+
+    res.json({ message: "Invoice deleted successfully",status:true });
+  } catch (error) {
+    console.error("Error deleting invoice:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
