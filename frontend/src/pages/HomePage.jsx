@@ -94,9 +94,15 @@ function HomePage() {
   };
 
   return (
-    <div>
+    <div
+      style={
+        {
+         background: "linear-gradient(to top, #e6b980 0%, #eacda3 100%)"
+        }
+      }
+    >
       <Navbar />
-      <Container maxWidth="md">
+      <Container maxWidth="md" >
         <ToastContainer autoClose="1000" />
         <Box sx={{ my: 4 }}>
           <Box
@@ -111,16 +117,13 @@ function HomePage() {
               color="primary"
               component={Link}
               to="/create-invoice"
+              style={{ fontSize: "12px" }}
             >
               Create Invoice
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleTriggerAutomation}
-            >
+            <button id="automation-btn" onClick={handleTriggerAutomation}>
               Trigger Automation
-            </Button>
+            </button>
           </Box>
           <Box sx={{ mt: 2 }}>
             <TextField

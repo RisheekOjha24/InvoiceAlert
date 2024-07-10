@@ -27,7 +27,7 @@ const Navbar = () => {
     <React.Fragment>
       <AppBar
         position="static"
-        sx={{ background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)" }}
+        sx={{ background: "#A3C1AD" }}
       >
         <Container maxWidth="lg">
           <Toolbar>
@@ -65,7 +65,7 @@ const Navbar = () => {
                 to="/create-invoice"
                 sx={{
                   display: { xs: "none", sm: "inline-flex" },
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
               >
                 Create Invoice

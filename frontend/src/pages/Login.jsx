@@ -9,13 +9,15 @@ import frontImage from "../assets/invoiceImage.jpeg";
 
 const Container = styled("div")({
   display: "flex",
-  minHeight: "100vh",
+  overflow:"hidden",
+  height:"100vh"
 });
 
 const StyledImage = styled("img")({
-
-  maxHeight: "99.5vh",
+  height: "100vh",
   objectFit: "cover",
+  padding:"0px",
+  margin:"0px"
 });
 
 const RightPane = styled("div")({
@@ -27,16 +29,13 @@ const RightPane = styled("div")({
   padding: "20px",
 });
 
-
-
 const Login = () => {
   const navigate = useNavigate();
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-
       const decoded = jwtDecode(credentialResponse.credential);
-  
+
       const { name, email } = decoded;
 
       const response = await axios.post(signin, { name, email });
@@ -47,20 +46,19 @@ const Login = () => {
 
       console.log("Sign in successful:", user);
 
-      navigate("/invoices"); 
+      navigate("/invoices");
     } catch (error) {
       console.error("Sign in error:", error);
-      
     }
   };
 
   return (
     <Container>
-      <div style={{ flex: 1 }}>
+      <div style={{ background: "#528b9c" }}>
         <StyledImage src={frontImage} alt="Welcome" />
       </div>
       <RightPane>
-        <div style={{padding:"20px" ,border:"2px solid black"}}>
+        <div style={{ transform: "scale(1.2)"}}>
           <GoogleOAuthProvider clientId="1026617270799-ac4m3lfuarba592tii7gq5k5p28s31ml.apps.googleusercontent.com">
             <GoogleLogin
               onSuccess={handleLoginSuccess}
@@ -71,10 +69,10 @@ const Login = () => {
                 <div
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
-                >
-                  Sign in with Google
-                </div>
+                ></div>
               )}
+              theme="filled_blue"
+              size="large"
             />
           </GoogleOAuthProvider>
         </div>
