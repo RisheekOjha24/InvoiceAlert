@@ -1,13 +1,11 @@
-// HomePage.js
 import React, { useEffect, useState } from "react";
 import { Button, Container, Typography, Box, TextField } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import InvoiceList from "../components/InvoiceList";
 import Navbar from "../components/Navbar";
-import { fetchInvoice, triggerAutomation,deleteList } from "../utils/APIRoute";
+import { fetchInvoice, triggerAutomation, deleteList } from "../utils/APIRoute";
 
 function HomePage() {
   const [invoices, setInvoices] = useState([]);
@@ -75,17 +73,16 @@ function HomePage() {
 
   const handleDeleteInvoice = async (id) => {
     try {
-
-      const response= await axios.delete(deleteList, {
+      const response = await axios.delete(deleteList, {
         data: {
-          email:user,
-          invoiceId: id, 
+          email: user,
+          invoiceId: id,
         },
       });
       const updatedInvoices = invoices.filter((invoice) => invoice._id !== id);
 
       setInvoices(updatedInvoices);
-      setFilteredInvoices(updatedInvoices); 
+      setFilteredInvoices(updatedInvoices);
       toast.success("Invoice deleted successfully!");
     } catch (error) {
       console.error("Error deleting invoice:", error);
@@ -94,16 +91,10 @@ function HomePage() {
   };
 
   return (
-    <div
-      style={
-        {
-         background: "linear-gradient(to top, #e6b980 0%, #eacda3 100%)"
-        }
-      }
-    >
+    <div style={styles.page}>
       <Navbar />
-      <Container maxWidth="md" >
-        <ToastContainer autoClose="1000" />
+      <Container maxWidth="md" style={styles.container}>
+        <ToastContainer autoClose={1000} />
         <Box sx={{ my: 4 }}>
           <Box
             sx={{
@@ -111,28 +102,26 @@ function HomePage() {
               justifyContent: "space-between",
               alignItems: "center",
             }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="/create-invoice"
-              style={{ fontSize: "12px" }}
-            >
-              Create Invoice
-            </Button>
-            <button id="automation-btn" onClick={handleTriggerAutomation}>
-              Trigger Automation
-            </button>
-          </Box>
+          ></Box>
           <Box sx={{ mt: 2 }}>
-            <TextField
-              label="Search by Email"
-              variant="outlined"
-              fullWidth
+            <input
+              type="text"
+              placeholder="Search by Email"
               value={searchTerm}
               onChange={handleSearch}
+              style={{
+                width: "50%",
+                height: "40px",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "2px solid #ccc",
+                fontSize: "14px",
+              }}
             />
+            <button id="automation-btn" onClick={handleTriggerAutomation}
+            style={{float:"right"}}>
+              Trigger Automation
+            </button>
           </Box>
         </Box>
         <InvoiceList
@@ -144,5 +133,17 @@ function HomePage() {
     </div>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: `#FBF9F1  `,
+    display: "flex",
+    flexDirection: "column",
+  },
+  container: {
+    flexGrow: 1,
+  },
+};
 
 export default HomePage;

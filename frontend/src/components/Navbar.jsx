@@ -25,10 +25,7 @@ const Navbar = () => {
 
   return (
     <React.Fragment>
-      <AppBar
-        position="static"
-        sx={{ background: "#A3C1AD" }}
-      >
+      <AppBar position="static" sx={{ background: "#007791" }}>
         <Container maxWidth="lg">
           <Toolbar>
             <IconButton
