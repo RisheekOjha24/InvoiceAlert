@@ -1,5 +1,9 @@
-import React from "react";
 import Swal from "sweetalert2";
+import { MdDelete } from "react-icons/md";
+import { triggerAutomation } from "../utils/APIRoute";
+import axios from "axios";
+import { toast,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function InvoiceList({ invoices, onDelete }) {
   const handleDelete = async (id) => {
@@ -16,6 +20,21 @@ function InvoiceList({ invoices, onDelete }) {
 
     onDelete(id);
   };
+
+  const handleSendEmail=async(invoice)=>{
+    try{
+      const response=await axios.post(triggerAutomation,{
+        invoices:[invoice]
+      })
+       console.log("Email sent successfully:", response.data);
+       toast.success("Email sent successfully");
+    }
+    catch(error)
+    {
+      console.error("Error sending email:", error);
+        toast.error("Failed to send email, try again later");
+    }
+  }
 
   return (
     <div style={styles.container}>
@@ -50,19 +69,24 @@ function InvoiceList({ invoices, onDelete }) {
                 <td style={styles.tableCell}>{invoice.recipient}</td>
                 <td style={styles.tableCell}>Rs {invoice.amount}</td>
                 <td style={styles.tableCell}>{invoice.dueDate}</td>
-                <td style={{ ...styles.tableCell, ...styles.actionCell }}>
+                <td style={{ ...styles.tableCell, textAlign: "center" }}>
                   <button
-                    style={styles.deleteButton}
-                    onClick={() => handleDelete(invoice._id)}
+                    id="send-email-button"
+                    onClick={() => handleSendEmail(invoice)}
                   >
-                    Delete
+                    Send Email
                   </button>
+                  <MdDelete
+                    className="delete-icon"
+                    onClick={() => handleDelete(invoice._id)}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <ToastContainer autoClose={1000} />
     </div>
   );
 }
@@ -108,17 +132,7 @@ const styles = {
   },
   actionCell: {
     textAlign: "center",
-  },
-  deleteButton: {
-    backgroundColor: "#ff4d4d",
-    color: "white",
-    border: "none",
-    padding: "8px 12px",
-    fontWeight: "bold",
-    borderRadius: "4px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  },
+  }
 };
 
 export default InvoiceList;

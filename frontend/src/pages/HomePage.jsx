@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Typography, Box, TextField } from "@mui/material";
+import { Container, Box} from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import InvoiceList from "../components/InvoiceList";
+import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
 import { fetchInvoice, triggerAutomation, deleteList } from "../utils/APIRoute";
 
@@ -28,7 +29,7 @@ function HomePage() {
           }));
 
           setInvoices(formattedInvoices);
-          setFilteredInvoices(formattedInvoices); // Initialize filteredInvoices with all invoices
+          setFilteredInvoices(formattedInvoices); // Initializing filteredInvoices with all invoices
         } else {
           toast.error("No user found. Please log in.");
         }
@@ -50,11 +51,22 @@ function HomePage() {
   };
 
   const handleTriggerAutomation = async () => {
-    try {
-      console.log("Triggering automation process...");
-      const response = await axios.post(triggerAutomation, { invoices });
-      console.log("Automation triggered successfully:", response.data);
-      toast.success("Automation triggered successfully!");
+    try{
+           const tellme = await Swal.fire({
+             title:
+               "Send emails to all recipients?",
+             icon: "question",
+             showCancelButton: true,
+             confirmButtonColor: "#3085d6",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Delete",
+             width: "25rem",
+           });
+           if (!tellme.isConfirmed) return;
+          console.log("Triggering automation process...");
+          const response = await axios.post(triggerAutomation, {invoices});
+          console.log("Automation triggered successfully:", response.data);
+          toast.success("Automation triggered successfully!");
     } catch (error) {
       console.log("Error triggering automation:", error);
       toast.error("Failed to trigger automation.");
@@ -103,6 +115,7 @@ function HomePage() {
               alignItems: "center",
             }}
           ></Box>
+
           <Box sx={{ mt: 2 }}>
             <input
               type="text"
@@ -137,7 +150,7 @@ function HomePage() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: `#FBF9F1  `,
+    background: `#FBF9F1`,
     display: "flex",
     flexDirection: "column",
   },

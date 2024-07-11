@@ -85,7 +85,6 @@ const zapierWebhookUrl = process.env.ZAPIER_WEBHOOK_URL;
 module.exports.triggerAutomation = async (req, res) => {
   try {
     const { invoices } = req.body;
-
       if (!Array.isArray(invoices)) {
         throw new Error("Invoices data is not an array.");
     }
@@ -96,9 +95,16 @@ module.exports.triggerAutomation = async (req, res) => {
       body: `
         <html>
           <body>
-            <h2>Invoice Details</h2>
-            <p>Amount: ${invoice.amount}</p>
-            <p>Due Date: ${invoice.dueDate}</p>
+            <p style="margin: 0; padding: 0;">
+              <span style="font-weight: bold; margin-right: 10px;">Amount:</span> 
+              <span>Rs ${invoice.amount}</span>
+            </p>
+            <p style="margin: 0; padding: 0;">
+              <span style="font-weight: bold; margin-right: 10px;">Due Date:</span> 
+            <span>${invoice.dueDate}</span>
+            </p>
+  
+        <p>Please review the invoice and make the payment by the due date mentioned above. If you have any questions or need further clarification, feel free to reach out to us.</p>
           </body>
         </html>
       `,
@@ -132,7 +138,6 @@ module.exports.triggerAutomation = async (req, res) => {
 
 module.exports.deleteInvoice = async (req, res) => {
   const { email, invoiceId } = req.body; 
-
   try {
     let user = await User.findOne({ email });
 
