@@ -34,17 +34,17 @@ const Login = () => {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const decoded = jwtDecode(credentialResponse.credential);
+          const decoded = jwtDecode(credentialResponse.credential);
 
-      const { name, email } = decoded;
+          const { name, email } = decoded;
 
-      const response = await axios.post(signin, { name, email });
+          const response = await axios.post(signin, { name, email });
 
-      const { user } = response.data;
+          const { user } = response.data;
 
-      localStorage.setItem("user", JSON.stringify({ name, email }));
+          localStorage.setItem("user", JSON.stringify({ name, email }));
 
-      console.log("Sign in successful:", user);
+          console.log("Sign in successful:", user);
 
       navigate("/invoices");
     } catch (error) {
