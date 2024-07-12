@@ -41,7 +41,6 @@ module.exports.createInvoice = async (req, res) => {
         amount,
         dueDate,
       };
-
       user.invoices.push(invoiceData);
 
       // Save the user object with the new invoice
@@ -85,7 +84,6 @@ const zapierWebhookUrl = process.env.ZAPIER_WEBHOOK_URL;
 module.exports.triggerAutomation = async (req, res) => {
   try {
     const { invoices } = req.body;
-
       if (!Array.isArray(invoices)) {
         throw new Error("Invoices data is not an array.");
     }
@@ -96,9 +94,16 @@ module.exports.triggerAutomation = async (req, res) => {
       body: `
         <html>
           <body>
-            <h2>Invoice Details</h2>
-            <p>Amount: ${invoice.amount}</p>
-            <p>Due Date: ${invoice.dueDate}</p>
+            <p style="margin: 0; padding: 0;">
+              <span style="font-weight: bold; margin-right: 10px;">Amount:</span> 
+              <span>Rs ${invoice.amount}</span>
+            </p>
+            <p style="margin: 0; padding: 0;">
+              <span style="font-weight: bold; margin-right: 10px;">Due Date:</span> 
+            <span>${invoice.dueDate}</span>
+            </p>
+  
+        <p>Please review the invoice and make the payment by the due date mentioned above. If you have any questions or need further clarification, feel free to reach out to us.</p>
           </body>
         </html>
       `,
@@ -129,9 +134,9 @@ module.exports.triggerAutomation = async (req, res) => {
   }
 };
 
-
 module.exports.deleteInvoice = async (req, res) => {
-  const { email, invoiceId } = req.body; 
+  const { email, invoice ,type} = req.body;
+  const invoiceId = invoice._id.toString();
 
   try {
     let user = await User.findOne({ email });
@@ -139,16 +144,54 @@ module.exports.deleteInvoice = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    let { recipient, amount, dueDate } = invoice;
+    const [day, month, year] = dueDate.split("-");
+    dueDate = new Date(year, month - 1, day);
+    const delInvoiceObj = { recipient, amount, dueDate };
 
-    user.invoices = user.invoices.filter(
-      (invoice) => invoice._id.toString() !== invoiceId
-    );
+    // for handling hoe page deleted invoices
+    if(type!=="deleted")
+    {
+        user.invoices = user.invoices.filter(
+         (inv) => inv._id.toString() !== invoiceId
+        );
+         user.delInvoices.push(delInvoiceObj);
+         
+        await user.save();
+        return res.json({ message: "Invoice deleted successfully", status: true });
+    }
+    //for handling deleted page inovoices
+    user.delInvoices = user.delInvoices.filter(
+        (inv) => inv._id.toString() !== invoiceId
+      );
 
-    await user.save();
+      await user.save();
 
-    res.json({ message: "Invoice deleted successfully",status:true });
+      return res.json({
+        message: "Invoice deleted successfully",
+        status: true,
+      });
+
   } catch (error) {
     console.error("Error deleting invoice:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports.fetchDelInvoice = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const { delInvoices } = user;
+    return res.json(delInvoices);
+    
+  } catch (error) {
+    console.error("Error fetching deleted invoices:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -10,7 +10,7 @@ import {
   MenuItem,
   Box,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutBtn";
@@ -25,28 +25,19 @@ const Navbar = () => {
 
   return (
     <React.Fragment>
-      <AppBar
-        position="static"
-        sx={{ background: "#A3C1AD" }}
-      >
+      <AppBar position="static" sx={{ background: "#007791" }}>
         <Container maxWidth="lg">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2, display: { sm: "block", md: "none" } }}
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link
                 to="/invoices"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <img src={Logo} alt="Invoice Alert" style={{ width: "5rem" }} />
+                <img
+                  src={Logo}
+                  alt="Invoice Alert"
+                  style={{ width: "5rem", filter: "invert()" }}
+                />
               </Link>
             </Typography>
             <nav style={{ display: "flex" }}>
@@ -69,6 +60,17 @@ const Navbar = () => {
                 }}
               >
                 Create Invoice
+              </MenuItem>
+
+              <MenuItem
+                component={Link}
+                to="/invoice-history"
+                sx={{
+                  display: { xs: "none", sm: "inline-flex" },
+                  fontWeight: "bold",
+                }}
+              >
+                Invoice History
               </MenuItem>
             </nav>
             <LogoutButton />
@@ -108,7 +110,6 @@ const Navbar = () => {
             >
               Create Invoice
             </MenuItem>
-            {/* Add more MenuItems for other links */}
           </List>
         </Box>
       </Drawer>

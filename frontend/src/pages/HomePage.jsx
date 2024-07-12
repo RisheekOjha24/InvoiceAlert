@@ -1,13 +1,12 @@
-// HomePage.js
 import React, { useEffect, useState } from "react";
-import { Button, Container, Typography, Box, TextField } from "@mui/material";
+import { Container, Box} from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import InvoiceList from "../components/InvoiceList";
+import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
-import { fetchInvoice, triggerAutomation,deleteList } from "../utils/APIRoute";
+import { fetchInvoice, triggerAutomation, deleteList } from "../utils/APIRoute";
 
 function HomePage() {
   const [invoices, setInvoices] = useState([]);
@@ -30,13 +29,12 @@ function HomePage() {
           }));
 
           setInvoices(formattedInvoices);
-          setFilteredInvoices(formattedInvoices); // Initialize filteredInvoices with all invoices
+          setFilteredInvoices(formattedInvoices); // Initializing filteredInvoices with all invoices
         } else {
           toast.error("No user found. Please log in.");
         }
       } catch (error) {
         console.error("Error fetching invoices:", error);
-        toast.error("Failed to fetch invoices.");
       }
     };
 
@@ -52,11 +50,22 @@ function HomePage() {
   };
 
   const handleTriggerAutomation = async () => {
-    try {
-      console.log("Triggering automation process...");
-      const response = await axios.post(triggerAutomation, { invoices });
-      console.log("Automation triggered successfully:", response.data);
-      toast.success("Automation triggered successfully!");
+    try{
+           const tellme = await Swal.fire({
+             title:
+               "Send emails to all recipients?",
+             icon: "question",
+             showCancelButton: true,
+             confirmButtonColor: "#3085d6",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Send",
+             maxWidth: "25rem",
+           });
+           if (!tellme.isConfirmed) return;
+          console.log("Triggering automation process...");
+          const response = await axios.post(triggerAutomation, {invoices});
+          console.log("Automation triggered successfully:", response.data);
+          toast.success("Automation triggered successfully!");
     } catch (error) {
       console.log("Error triggering automation:", error);
       toast.error("Failed to trigger automation.");
@@ -73,20 +82,20 @@ function HomePage() {
     setFilteredInvoices(filtered);
   };
 
-  const handleDeleteInvoice = async (id) => {
+  const handleDeleteInvoice = async (invoiceDel) => {
     try {
-
-      const response= await axios.delete(deleteList, {
+      const response = await axios.delete(deleteList, {
         data: {
-          email:user,
-          invoiceId: id, 
+          email: user,
+          invoice:invoiceDel,
+          type:"present"
         },
       });
-      const updatedInvoices = invoices.filter((invoice) => invoice._id !== id);
-
+      const updatedInvoices = invoices.filter((invoice) => invoice._id !== invoiceDel._id);
+      
       setInvoices(updatedInvoices);
-      setFilteredInvoices(updatedInvoices); 
-      toast.success("Invoice deleted successfully!");
+      setFilteredInvoices(updatedInvoices);
+
     } catch (error) {
       console.error("Error deleting invoice:", error);
       toast.error("Failed to delete invoice.");
@@ -94,16 +103,10 @@ function HomePage() {
   };
 
   return (
-    <div
-      style={
-        {
-         background: "linear-gradient(to top, #e6b980 0%, #eacda3 100%)"
-        }
-      }
-    >
+    <div style={styles.page}>
       <Navbar />
-      <Container maxWidth="md" >
-        <ToastContainer autoClose="1000" />
+      <Container maxWidth="md" style={styles.container}>
+        <ToastContainer autoClose={1000} />
         <Box sx={{ my: 4 }}>
           <Box
             sx={{
@@ -111,28 +114,27 @@ function HomePage() {
               justifyContent: "space-between",
               alignItems: "center",
             }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="/create-invoice"
-              style={{ fontSize: "12px" }}
-            >
-              Create Invoice
-            </Button>
-            <button id="automation-btn" onClick={handleTriggerAutomation}>
-              Trigger Automation
-            </button>
-          </Box>
+          ></Box>
+
           <Box sx={{ mt: 2 }}>
-            <TextField
-              label="Search by Email"
-              variant="outlined"
-              fullWidth
+            <input
+              type="text"
+              placeholder="Search by Email"
               value={searchTerm}
               onChange={handleSearch}
+              style={{
+                width: "50%",
+                height: "40px",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "2px solid #ccc",
+                fontSize: "14px",
+              }}
             />
+            <button id="automation-btn" onClick={handleTriggerAutomation}
+            style={{float:"right"}}>
+              Trigger Automation
+            </button>
           </Box>
         </Box>
         <InvoiceList
@@ -144,5 +146,17 @@ function HomePage() {
     </div>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: `#FBF9F1`,
+    display: "flex",
+    flexDirection: "column",
+  },
+  container: {
+    flexGrow: 1,
+  },
+};
 
 export default HomePage;

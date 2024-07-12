@@ -84,12 +84,18 @@ const CreateInvoice = () => {
 
   
   return (
-    <div>
-      <Navbar/>
+    <div style={{ backgroundColor: "#FBF9F1", minHeight: "100vh" }}>
+      <Navbar />
       <Container maxWidth="sm">
         <ToastContainer autoClose={1200} />
         <StyledPaper elevation={3}>
-          <Typography variant="h5" gutterBottom>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{
+              fontWeight: "bold",
+            }}
+          >
             Create Invoice
           </Typography>
           <StyledForm onSubmit={handleSubmit}>

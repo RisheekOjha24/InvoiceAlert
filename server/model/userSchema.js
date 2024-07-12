@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   invoices: [invoiceSchema], // Embedding invoices as an array
   createdAt: { type: Date, default: Date.now },
+  delInvoices: [invoiceSchema]
 });
 
 module.exports = mongoose.model("User", userSchema);
