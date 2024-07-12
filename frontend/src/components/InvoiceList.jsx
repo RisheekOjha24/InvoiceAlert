@@ -6,7 +6,8 @@ import { toast,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function InvoiceList({ invoices, onDelete }) {
-  const handleDelete = async (id) => {
+ 
+  const handleDelete = async (invoice) => {
     const tellme = await Swal.fire({
       title: "Delete the invoice?",
       icon: "warning",
@@ -17,8 +18,7 @@ function InvoiceList({ invoices, onDelete }) {
       width: "25rem",
     });
     if (!tellme.isConfirmed) return;
-
-    onDelete(id);
+    onDelete(invoice);
   };
 
   const handleSendEmail=async(invoice)=>{
@@ -78,7 +78,7 @@ function InvoiceList({ invoices, onDelete }) {
                   </button>
                   <MdDelete
                     className="delete-icon"
-                    onClick={() => handleDelete(invoice._id)}
+                    onClick={() => handleDelete(invoice)}
                   />
                 </td>
               </tr>

@@ -41,7 +41,6 @@ module.exports.createInvoice = async (req, res) => {
         amount,
         dueDate,
       };
-
       user.invoices.push(invoiceData);
 
       // Save the user object with the new invoice
@@ -135,25 +134,64 @@ module.exports.triggerAutomation = async (req, res) => {
   }
 };
 
-
 module.exports.deleteInvoice = async (req, res) => {
-  const { email, invoiceId } = req.body; 
+  const { email, invoice ,type} = req.body;
+  const invoiceId = invoice._id.toString();
+
   try {
     let user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    let { recipient, amount, dueDate } = invoice;
+    const [day, month, year] = dueDate.split("-");
+    dueDate = new Date(year, month - 1, day);
+    const delInvoiceObj = { recipient, amount, dueDate };
 
-    user.invoices = user.invoices.filter(
-      (invoice) => invoice._id.toString() !== invoiceId
-    );
+    // for handling hoe page deleted invoices
+    if(type!=="deleted")
+    {
+        user.invoices = user.invoices.filter(
+         (inv) => inv._id.toString() !== invoiceId
+        );
+         user.delInvoices.push(delInvoiceObj);
+         
+        await user.save();
+        return res.json({ message: "Invoice deleted successfully", status: true });
+    }
+    //for handling deleted page inovoices
+    user.delInvoices = user.delInvoices.filter(
+        (inv) => inv._id.toString() !== invoiceId
+      );
 
-    await user.save();
+      await user.save();
 
-    res.json({ message: "Invoice deleted successfully",status:true });
+      return res.json({
+        message: "Invoice deleted successfully",
+        status: true,
+      });
+
   } catch (error) {
     console.error("Error deleting invoice:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports.fetchDelInvoice = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const { delInvoices } = user;
+    return res.json(delInvoices);
+    
+  } catch (error) {
+    console.error("Error fetching deleted invoices:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

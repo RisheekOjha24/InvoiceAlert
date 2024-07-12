@@ -35,7 +35,6 @@ function HomePage() {
         }
       } catch (error) {
         console.error("Error fetching invoices:", error);
-        toast.error("Failed to fetch invoices.");
       }
     };
 
@@ -59,8 +58,8 @@ function HomePage() {
              showCancelButton: true,
              confirmButtonColor: "#3085d6",
              cancelButtonColor: "#d33",
-             confirmButtonText: "Delete",
-             width: "25rem",
+             confirmButtonText: "Send",
+             maxWidth: "25rem",
            });
            if (!tellme.isConfirmed) return;
           console.log("Triggering automation process...");
@@ -83,19 +82,20 @@ function HomePage() {
     setFilteredInvoices(filtered);
   };
 
-  const handleDeleteInvoice = async (id) => {
+  const handleDeleteInvoice = async (invoiceDel) => {
     try {
       const response = await axios.delete(deleteList, {
         data: {
           email: user,
-          invoiceId: id,
+          invoice:invoiceDel,
+          type:"present"
         },
       });
-      const updatedInvoices = invoices.filter((invoice) => invoice._id !== id);
-
+      const updatedInvoices = invoices.filter((invoice) => invoice._id !== invoiceDel._id);
+      
       setInvoices(updatedInvoices);
       setFilteredInvoices(updatedInvoices);
-      toast.success("Invoice deleted successfully!");
+
     } catch (error) {
       console.error("Error deleting invoice:", error);
       toast.error("Failed to delete invoice.");
