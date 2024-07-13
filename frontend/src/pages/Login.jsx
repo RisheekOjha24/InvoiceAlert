@@ -59,7 +59,7 @@ const Login = () => {
       </div>
       <RightPane>
         <div style={{ transform: "scale(1.2)"}}>
-          <GoogleOAuthProvider clientId="1026617270799-ac4m3lfuarba592tii7gq5k5p28s31ml.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="">
             <GoogleLogin
               onSuccess={handleLoginSuccess}
               onError={() => {
